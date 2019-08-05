@@ -17,10 +17,10 @@ const MongoStore = mongo(session);
 import homeController from "./controllers/home";
 import userController from "./controllers/user";
 import logger from "./util/logger";
-
-
+import passport = require("passport");
+ 
 // API keys and Passport configuration
-
+import "./passport/passport";
 
 // Create Express server
 const app = express();
@@ -37,7 +37,8 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true} ).then(
 });
 
 // Express configuration
-app.set("port", process.env.PORT || 8080);
+app.set("port", process.env.PORT || 5500);
+app.set("httpsPort", process.env.HTTPSPORT || 6500);
 app.use(compression());
 app.use(cors());
 app.use(bodyParser.json());
@@ -54,6 +55,8 @@ app.use(session({
 app.use(flash());
 app.use(lusca.xframe("SAMEORIGIN"));
 app.use(lusca.xssProtection(true));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(
     express.static(path.join(__dirname, "public"), { maxAge: 31557600000 })

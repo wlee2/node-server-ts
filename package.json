@@ -2,10 +2,7 @@
   "name": "express-typescript-starter",
   "version": "0.1.0",
   "description": "A starting point for Node.js express apps with TypeScript",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Microsoft/TypeScript-Node-Starter"
-  },
+  "repository": {},
   "author": "Bowden Kelly",
   "license": "MIT",
   "scripts": {
@@ -27,8 +24,6 @@
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run serve-debug\""
   },
   "dependencies": {
-    "@types/bcrypt": "^3.0.0",
-    "@types/deep-equal": "^1.0.1",
     "async": "^3.0.1",
     "bcrypt": "^3.0.6",
     "bcrypt-nodejs": "^0.0.3",
@@ -60,7 +55,6 @@
   },
   "devDependencies": {
     "@types/async": "^3.0.0",
-    "@types/bcrypt-nodejs": "^0.0.30",
     "@types/bluebird": "^3.5.27",
     "@types/body-parser": "^1.17.0",
     "@types/chai": "^4.1.7",
@@ -73,7 +67,6 @@
     "@types/express-flash": "0.0.0",
     "@types/express-session": "^1.15.13",
     "@types/jest": "^24.0.15",
-    "@types/jquery": "^3.3.29",
     "@types/lodash": "^4.14.134",
     "@types/lusca": "^1.6.0",
     "@types/mongodb": "^3.1.28",
@@ -90,6 +83,8 @@
     "@types/winston": "^2.3.9",
     "@typescript-eslint/eslint-plugin": "^1.12.0",
     "@typescript-eslint/parser": "^1.12.0",
+    "@types/bcrypt": "^3.0.0",
+    "@types/deep-equal": "^1.0.1",
     "chai": "^4.2.0",
     "concurrently": "^4.1.0",
     "eslint": "^5.0.0",

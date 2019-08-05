@@ -6,14 +6,13 @@ export class UserRegisterDAO {
     this.password = null;
   }
   email: string;
-
   name: string;
   address: string;
   password: string;
 }
 
 export class UserDTO {
-  constructor() {}
+  constructor() { }
   id: number;
   email: string;
   name: string;

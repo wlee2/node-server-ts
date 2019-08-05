@@ -3,23 +3,29 @@ import { Observable } from 'rxjs';
 import mongoose from "mongoose";
 import { UserRegisterDAO, UserDTO } from "../repository/userRepository";
 import { User } from "../models/userModel";
+import { reject, resolve } from 'bluebird';
 
-export async function getUsers(): Promise<any> {
-    let userDto: UserDTO[] = [];
-    let data: any = await User.find().exec()
-    console.log(data);
-    data.forEach((e: any) => {
-        let userdto: UserDTO = new UserDTO();
-        userdto = {
-            id: e.id,
-            email: e.email,
-            name: e.name,
-            address: e.address
-        };
-        userDto.push(userdto);
-    })
-    console.log(userDto)
-    return userDto;
+export function getUsers(): Observable<any> {
+    return new Observable(observer => {
+        User.find()
+        .then(data => {
+            let userDto: UserDTO[] = [];
+
+            data.forEach((e: any) => {    
+                userDto.push({
+                    id: e.id,
+                    email: e.email,
+                    name: e.name,
+                    address: e.address
+                });
+            });
+
+            observer.next(userDto);
+        })
+        .catch(err => {
+            observer.error(err);
+        })
+    });
 }
 
 export function userRegisterModelValidator(input: any, model: UserRegisterDAO): Observable<any> {
