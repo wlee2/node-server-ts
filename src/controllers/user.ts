@@ -29,6 +29,7 @@ const test = new Observable(observer => {
   }
   observer.next(i);
 })
+
 router.get("/test", (req, res, next) => {
   
   test.subscribe(i => {
