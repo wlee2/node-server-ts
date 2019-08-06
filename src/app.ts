@@ -1,17 +1,14 @@
 import express from "express";
 import compression from "compression";  // compresses requests
-import session from "express-session";
 import bodyParser from "body-parser";
-import lusca from "lusca";
-import mongo from "connect-mongo";
-import flash from "express-flash";
+import helmet from "helmet";
 import path from "path";
 import mongoose from "mongoose";
 import bluebird from "bluebird";
-import { MONGODB_URI, SESSION_SECRET } from "./util/secrets";
+import { MONGODB_URI } from "./util/secrets";
 import cors from "cors";
 
-const MongoStore = mongo(session);
+//const MongoStore = mongo(session);
 
 // Controllers (route handlers)
 import homeController from "./controllers/home";
@@ -43,20 +40,21 @@ app.use(compression());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({
-    resave: true,
-    saveUninitialized: true,
-    secret: SESSION_SECRET,
-    store: new MongoStore({
-        url: mongoUrl,
-        autoReconnect: true
-    })
-}));
-app.use(flash());
-app.use(lusca.xframe("SAMEORIGIN"));
-app.use(lusca.xssProtection(true));
 app.use(passport.initialize());
-app.use(passport.session());
+app.use(helmet());
+
+
+//stateless API
+// app.use(session({
+//     resave: true,
+//     saveUninitialized: true,
+//     secret: SESSION_SECRET,
+//     store: new MongoStore({
+//         url: mongoUrl,
+//         autoReconnect: true
+//     })
+// }));
+// app.use(passport.session());
 
 app.use(
     express.static(path.join(__dirname, "public"), { maxAge: 31557600000 })
@@ -65,6 +63,7 @@ app.use(
 /**
  * Primary app routes.
  */
+
 app.use("/", homeController);
 app.use("/user", userController);
 
@@ -75,5 +74,4 @@ app.use("/user", userController);
 /**
  * OAuth authentication routes. (Sign in)
  */
-
 export default app;

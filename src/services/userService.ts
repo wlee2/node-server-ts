@@ -1,45 +1,29 @@
 import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 import { Observable } from 'rxjs';
-import mongoose from "mongoose";
 import { UserRegisterDAO, UserDTO } from "../repository/userRepository";
 import { User } from "../models/userModel";
-import { reject, resolve } from 'bluebird';
+import MongoModelToViewModel from '../util/modelCopy';
 
-export function getUsers(): Observable<any> {
+export function getUserInfo(email: string): Observable<UserDTO> {
     return new Observable(observer => {
-        User.find()
-        .then(data => {
-            let userDto: UserDTO[] = [];
-
-            data.forEach((e: any) => {    
-                userDto.push({
-                    id: e.id,
-                    email: e.email,
-                    name: e.name,
-                    address: e.address
-                });
-            });
-
-            observer.next(userDto);
-        })
-        .catch(err => {
-            observer.error(err);
-        })
+        User.findOne({ email: email })
+            .then(user => {
+                if(user === null) {
+                    observer.error('can not find a user');
+                }
+                let userDTO: UserDTO = new UserDTO();
+                MongoModelToViewModel(user, userDTO, (err: any, result: UserDTO) => {
+                    if(err) {
+                        observer.error(err);
+                    }
+                    observer.next(result);
+                })
+            })
+            .catch(err => {
+                observer.error(err);
+            })
     });
-}
-
-export function userRegisterModelValidator(input: any, model: UserRegisterDAO): Observable<any> {
-    return new Observable(observer => {
-        if (Object.keys(input).length != Object.keys(model).length) {
-            observer.error(`model fields is out of range`);
-        }
-        Object.keys(input).forEach(key => {
-            if (!model.hasOwnProperty(key)) {
-                observer.error(`${key} is not belong to register model`);
-            }
-        });
-        observer.next(true);
-    })
 }
 
 export function userRegistration(model: UserRegisterDAO): Observable<any> {
@@ -53,11 +37,12 @@ export function userRegistration(model: UserRegisterDAO): Observable<any> {
                 name: model.name,
                 address: model.address,
                 email: model.email,
-                password: hash
+                password: hash,
+                picture: getAvatar(model.email)
             })
             newUser.save()
                 .then(() => {
-                    observer.next(true)
+                    observer.next(true);
                 })
                 .catch((err) => {
                     if (err.code == 11000) {
@@ -71,3 +56,8 @@ export function userRegistration(model: UserRegisterDAO): Observable<any> {
     })
 }
 
+
+function getAvatar(email: string, size: number = 200): string {
+    const md5 = crypto.createHash("md5").update(email).digest("hex");
+    return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
+}
