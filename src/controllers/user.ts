@@ -6,7 +6,6 @@ import ModelValidator from "../util/validator";
 import { tryLocalLogin } from "../passport/localLogin";
 import jwt from "jsonwebtoken";
 import { Authorize } from "../services/auth";
-import { Observable } from "rxjs";
 
 const router = express.Router();
 
@@ -23,31 +22,20 @@ router.get("/", Authorize, (req: any, res: Response) => {
   )
 });
 
-const test = new Observable(observer => {
-  let i = 0;
-  for(i; i < 10000000; i++) {
-  }
-  observer.next(i);
-})
-
-router.get("/test", (req, res, next) => {
-  
-  test.subscribe(i => {
-    res.send({i: i})
-  },
-  err => {
-    res.send(err);
-  })
-})
 
 //login router
 router.post("/login", tryLocalLogin, (req: Request, res: Response, next) => {
   const token = jwt.sign({ email: req.user.email }, process.env.SESSION_SECRET, { algorithm: 'HS512', expiresIn: '2h' });
+  //res.status(200).cookie('token', token, {maxAge: 1000 * 60 * 60 * 5, httpOnly: true}).send({success: true});
   res.status(200).json({
     success: true,
     token: token
   })
 });
+
+// router.get('/testing', (req, res, next) => {
+//   res.status(200).cookie('token', "giiggigigii", {maxAge: 1000 * 60 * 60 * 5, httpOnly: true, signed: true}).send({success: true});
+// })
 
 
 //register router

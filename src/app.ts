@@ -1,11 +1,12 @@
 import express from "express";
 import compression from "compression";  // compresses requests
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import path from "path";
 import mongoose from "mongoose";
 import bluebird from "bluebird";
-import { MONGODB_URI } from "./util/secrets";
+import { MONGODB_URI, SESSION_SECRET } from "./util/secrets";
 import cors from "cors";
 
 //const MongoStore = mongo(session);
@@ -40,6 +41,7 @@ app.use(compression());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser(SESSION_SECRET));
 app.use(passport.initialize());
 app.use(helmet());
 
