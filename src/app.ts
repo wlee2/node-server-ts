@@ -1,7 +1,6 @@
 import express from "express";
 import compression from "compression";  // compresses requests
 import bodyParser from "body-parser";
-import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import path from "path";
 import mongoose from "mongoose";
@@ -16,7 +15,7 @@ import homeController from "./controllers/home";
 import userController from "./controllers/user";
 import logger from "./util/logger";
 import passport = require("passport");
- 
+
 // API keys and Passport configuration
 import "./passport/passport";
 
@@ -27,7 +26,7 @@ const app = express();
 const mongoUrl = MONGODB_URI;
 mongoose.Promise = bluebird;
 
-mongoose.connect(mongoUrl, { useNewUrlParser: true} ).then(
+mongoose.connect(mongoUrl, { useNewUrlParser: true }).then(
     () => { /** ready to use. The `mongoose.connect()` promise resolves to undefined. */ },
 ).catch(err => {
     logger.debug("MongoDB connection error. Please make sure MongoDB is running. " + err);
@@ -41,7 +40,7 @@ app.use(compression());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser(SESSION_SECRET));
+// app.use(cookieParser(SESSION_SECRET));
 app.use(passport.initialize());
 app.use(helmet());
 
