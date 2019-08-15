@@ -65,7 +65,7 @@ describe("review test", () => {
             })
     })
 
-    // test("get photo then delete - should return 200 with picture then delete with sucess", (done) => {
+    // test("get photo - should return 200 with picture", (done) => {
     //     const url = `/photo/${reviewData[0].ID}/${reviewData[0].Photos[0]}.png`;
     //     console.log(url);
     //     request(app).get(url)
@@ -73,6 +73,7 @@ describe("review test", () => {
     //             expect(res.status).toBe(200);
     //             done();
     //         })
+    //     });
 
     //         request(app).delete(`/review/${reviewData[0].ID}`)
     //         .set('Authorization', `Bearer ${token}`)
@@ -83,13 +84,13 @@ describe("review test", () => {
     //         })
     // })
 
-    test("should return 200 with success delete", (done) => {
-        request(app).delete(`/review/${reviewData[0].ID}`)
-            .set('Authorization', `Bearer ${token}`)
-            .then(res => {
-                expect(res.status).toBe(200);
-                expect(res.body.status).toBe('success');
-                done();
-            })
-    })
+    // test("should return 200 with success delete", (done) => {
+    //     request(app).delete(`/review/${reviewData[0].ID}`)
+    //         .set('Authorization', `Bearer ${token}`)
+    //         .then(res => {
+    //             expect(res.status).toBe(200);
+    //             expect(res.body.status).toBe('success');
+    //             done();
+    //         })
+    // })
 });

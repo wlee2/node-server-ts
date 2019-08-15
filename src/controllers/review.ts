@@ -17,7 +17,7 @@ router.get("/", async (req: Request, res: Response) => {
         }
         let reviewDTO: ReviewDTO[] = [];
 
-        const reviews: ReviewModel[] = await Review.find().populate('Author').skip(req.query.page * 5).limit(5);
+        const reviews: ReviewModel[] = await Review.find().populate('Author').sort({WrittenDate: -1}).skip(req.query.page * 5).limit(5);
         reviews.forEach(review => {
             MongoModelToViewModel(review, new ReviewDTO(), (error: any, result: ReviewDTO) => {
                 if(error) {
@@ -95,6 +95,9 @@ router.delete('/:id', Authorize, async (req: Request, res: Response) => {
         });
 
         const reviewResult = await Review.findById(req.params.id);
+        if(!reviewResult) {
+            throw 'finding review data result by id is null'
+        }
 
         const userResult = await User.findById(reviewResult.Author);
         if (req.user.email !== userResult.email) {

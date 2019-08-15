@@ -1,11 +1,8 @@
 import Axios from "axios";
-import { Stream } from "stream";
 import fs from 'fs';
 import path from 'path';
 import logger from "../util/logger";
 import rimraf from 'rimraf';
-
-let myStream = Stream.Transform;
 
 export function savePhotoByReference(photoRef: Array<string>, reviewID: string, cb: CallableFunction) {
     try {
@@ -29,7 +26,7 @@ export function savePhotoByReference(photoRef: Array<string>, reviewID: string, 
             // console.log(photoPath);
             // const result = await fs.writeFileSync(photoPath, photo.read());
             // console.log(result);
-            download_image(url, photoPath)
+            await download_image(url, photoPath)
         } catch (error) {
             cb(error);
         }
