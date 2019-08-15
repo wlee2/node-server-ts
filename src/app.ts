@@ -8,14 +8,18 @@ import mongoose from "mongoose";
 import bluebird from "bluebird";
 import { MONGODB_URI, SESSION_SECRET } from "./util/secrets";
 import cors from "cors";
+import morgan from 'morgan';
+import logger from "./util/logger";
+import passport from 'passport';
 
 //const MongoStore = mongo(session);
 
 // Controllers (route handlers)
 import homeController from "./controllers/home";
 import userController from "./controllers/user";
-import logger from "./util/logger";
-import passport = require("passport");
+import reviewController from "./controllers/review";
+import placeController from "./controllers/place";
+
  
 // API keys and Passport configuration
 import "./passport/passport";
@@ -39,6 +43,7 @@ app.set("port", process.env.PORT || 5500);
 app.set("httpsPort", process.env.HTTPSPORT || 6500);
 app.use(compression());
 app.use(cors());
+app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser(SESSION_SECRET));
@@ -61,6 +66,7 @@ app.use(helmet());
 app.use(
     express.static(path.join(__dirname, "public"), { maxAge: 31557600000 })
 );
+app.use('/photo', express.static(path.join('photos')))
 
 /**
  * Primary app routes.
@@ -68,6 +74,8 @@ app.use(
 
 app.use("/", homeController);
 app.use("/user", userController);
+app.use("/review", reviewController);
+app.use("/place", placeController);
 
 /**
  * API examples routes.

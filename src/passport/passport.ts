@@ -20,14 +20,14 @@ passport.use(new LocalStrategy({
     User.findOne({ email: email.toLowerCase() }, (err: any, user: any) => {
         if (err) { return done(err); }
         if (!user) {
-            return done(undefined, false, { message: `Email ${email} not found.` });
+            return done(`Email ${email} not found.`, false);
         }
         bcrypt.compare(password, user.password, (err: Error, isMatch: boolean) => {
             if (err) { return done(err); }
             if (isMatch) {
                 return done(undefined, user);
             }
-            return done(undefined, false, { message: "Invalid email or password." });
+            return done("Invalid email or password.", false);
         });
     });
 }));

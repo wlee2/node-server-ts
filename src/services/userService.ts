@@ -3,18 +3,18 @@ import crypto from 'crypto';
 import { Observable } from 'rxjs';
 import { UserRegisterDAO, UserDTO } from "../repository/userRepository";
 import { User } from "../models/userModel";
-import MongoModelToViewModel from '../util/modelCopy';
+import { MongoModelToViewModel } from '../util/modelCopy';
 
 export function getUserInfo(email: string): Observable<UserDTO> {
     return new Observable(observer => {
         User.findOne({ email: email })
             .then(user => {
-                if(user === null) {
+                if (user === null) {
                     observer.error('can not find a user');
                 }
                 let userDTO: UserDTO = new UserDTO();
                 MongoModelToViewModel(user, userDTO, (err: any, result: UserDTO) => {
-                    if(err) {
+                    if (err) {
                         observer.error(err);
                     }
                     observer.next(result);

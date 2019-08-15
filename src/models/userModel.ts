@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 export type UserDocument = mongoose.Document & {
     email: string;
@@ -6,6 +6,7 @@ export type UserDocument = mongoose.Document & {
     password: string;
     address: string;
     picture: string;
+    ReviewData: [Schema.Types.ObjectId];
 };
 
 const userSchema = new mongoose.Schema({
@@ -13,7 +14,8 @@ const userSchema = new mongoose.Schema({
     name: String,
     password: String,
     address: String,
-    picture: String
+    picture: String,
+    ReviewData: [{ type: Schema.Types.ObjectId, ref: 'Review' }]
 }, { timestamps: true });
 
 export const User = mongoose.model<UserDocument>("User", userSchema);
