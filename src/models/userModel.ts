@@ -1,21 +1,21 @@
 import mongoose, { Schema } from "mongoose";
 
 export type UserDocument = mongoose.Document & {
-    email: string;
-    name: string;
-    password: string;
-    address: string;
-    picture: string;
-    ReviewData: [Schema.Types.ObjectId];
+    Email: string;
+    Name: string;
+    Password: string;
+    Address: string;
+    Picture: string;
+    Reviews: Array<Schema.Types.ObjectId>;
 };
 
 const userSchema = new mongoose.Schema({
-    email: { type: String, unique: true },
-    name: String,
-    password: String,
-    address: String,
-    picture: String,
-    ReviewData: [{ type: Schema.Types.ObjectId, ref: 'Review' }]
+    Email: { type: String, unique: true },
+    Name: String,
+    Password: String,
+    Address: String,
+    Picture: String,
+    Reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }]
 }, { timestamps: true });
 
 export const User = mongoose.model<UserDocument>("User", userSchema);

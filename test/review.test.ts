@@ -4,10 +4,6 @@ import ModelValidator from "../src/util/validator";
 import { ReviewDTO } from "../src/repository/reviewRepository";
 
 const sample_review_data = {
-    Photos: [
-        'CmRaAAAAul4OSVMINi-aYI9v8Tw8EFrpx2vaaT_MMg20QS2tz9MRIy3xveuT0redt8e_2HQBIWvay938F4QfObMvB4pbEVLmcpgGSLblEEcNn7Vhpi2s1jWdoMuluqOqQ8Y1xnfqEhBI0RN039008CsANWLbzKwTGhTrIYr7Mx4kWyBBOae38nz6b4VxGA',
-        'CmRaAAAAul4OSVMINi-aYI9v8Tw8EFrpx2vaaT_MMg20QS2tz9MRIy3xveuT0redt8e_2HQBIWvay938F4QfObMvB4pbEVLmcpgGSLblEEcNn7Vhpi2s1jWdoMuluqOqQ8Y1xnfqEhBI0RN039008CsANWLbzKwTGhTrIYr7Mx4kWyBBOae38nz6b4VxGA'
-    ],
     ReviewContentText: 'This place was good!',
     PlaceRate: 3,
     LocationReferenceID: 'a123123',
@@ -16,20 +12,24 @@ const sample_review_data = {
     GeoLocation: {
         Lat: 45.12,
         Lng: 85.56444
-    }
+    },
+    Photos: [
+        "CmRaAAAAul4OSVMINi-aYI9v8Tw8EFrpx2vaaT_MMg20QS2tz9MRIy3xveuT0redt8e_2HQBIWvay938F4QfObMvB4pbEVLmcpgGSLblEEcNn7Vhpi2s1jWdoMuluqOqQ8Y1xnfqEhBI0RN039008CsANWLbzKwTGhTrIYr7Mx4kWyBBOae38nz6b4VxGA",
+        "CmRaAAAAul4OSVMINi-aYI9v8Tw8EFrpx2vaaT_MMg20QS2tz9MRIy3xveuT0redt8e_2HQBIWvay938F4QfObMvB4pbEVLmcpgGSLblEEcNn7Vhpi2s1jWdoMuluqOqQ8Y1xnfqEhBI0RN039008CsANWLbzKwTGhTrIYr7Mx4kWyBBOae38nz6b4VxGA"
+    ]
 }
+
+let token: string = '';
+let reviewData: ReviewDTO[] = [];
 
 
 describe("review test", () => {
 
-    let token: string = '';
-    let reviewData: ReviewDTO[] = [];
-
     test("prepare - should return 200 with token", (done) => {
         request(app).post("/user/login")
             .send({
-                email: 'stoneage95xp@gmail.com',
-                password: 'lee2010'
+                Email: 'stoneage95xp@gmail.com',
+                Password: 'lee2010'
             })
             .then(res => {
                 expect(res.status).toBe(200);
@@ -56,13 +56,31 @@ describe("review test", () => {
             .then(res => {
                 expect(res.status).toBe(200);
                 res.body.forEach((review: any) => {
-                    ModelValidator(review, new ReviewDTO, (err: any) => {
+                    let dto = new ReviewDTO();
+                    ModelValidator(review, dto, (err: any) => {
                         expect(err).toBe(null)
                     })
                 });
                 reviewData = res.body;
-                done();
+                request(app).delete(`/review/${reviewData[0].ID}`)
+                    .set('Authorization', `Bearer ${token}`)
+                    .then(res => {
+                        expect(res.status).toBe(200);
+                        expect(res.body.status).toBe('success');
+                        done();
+                    })
             })
+        // .then(_ => {
+
+        //     // request(app).delete(`/review/${reviewData[0].ID}`)
+        //     //     .set('Authorization', `Bearer ${token}`)
+        //     //     .then(res => {
+        //     //         expect(res.status).toBe(200);
+        //     //         expect(res.body.status).toBe('success');
+        //     //     })
+        //     done();
+        // })
+
     })
 
     // test("get photo - should return 200 with picture", (done) => {
@@ -83,14 +101,4 @@ describe("review test", () => {
     //             done();
     //         })
     // })
-
-    // test("should return 200 with success delete", (done) => {
-    //     request(app).delete(`/review/${reviewData[0].ID}`)
-    //         .set('Authorization', `Bearer ${token}`)
-    //         .then(res => {
-    //             expect(res.status).toBe(200);
-    //             expect(res.body.status).toBe('success');
-    //             done();
-    //         })
-    // })
-});
+})

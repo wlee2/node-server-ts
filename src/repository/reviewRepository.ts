@@ -10,7 +10,7 @@ export class ReviewDAO {
         Lat: number,
         Lng: number
     } = { Lat: 0, Lng: 0 };
-    Photos: [string] = [''];
+    Photos: Array<string> = [];
 }
 
 export class ReviewDTO {
@@ -25,7 +25,7 @@ export class ReviewDTO {
         Lat: number,
         Lng: number
     } = { Lat: 0, Lng: 0 };
-    Photos: [String] = [''];
-    Comments: [Schema.Types.ObjectId] = [null];
-    WrittenDate: Date = new Date() ;
+    Photos: Array<string> = [];
+    Comments: Array<string> = [];
+    WrittenDate: Date = new Date();
 }

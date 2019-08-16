@@ -5,9 +5,9 @@ import { UserRegisterDAO, UserDTO } from "../repository/userRepository";
 import { User } from "../models/userModel";
 import { MongoModelToViewModel } from '../util/modelCopy';
 
-export function getUserInfo(email: string): Observable<UserDTO> {
+export function getUserInfo(Email: string): Observable<UserDTO> {
     return new Observable(observer => {
-        User.findOne({ email: email })
+        User.findOne({ Email: Email })
             .then(user => {
                 if (user === null) {
                     observer.error('can not find a user');
@@ -26,38 +26,39 @@ export function getUserInfo(email: string): Observable<UserDTO> {
     });
 }
 
-export function userRegistration(model: UserRegisterDAO): Observable<any> {
-    return new Observable(observer => {
-        bcrypt.hash(model.password, 10, function (err, hash) {
+export function userRegistration(model: UserRegisterDAO): Promise<boolean | string> {
+    return new Promise((resolve, reject) => {
+        bcrypt.hash(model.Password, 10, function (err, hash) {
             if (err) {
-                observer.error('bcrypt error');
+                reject('bcrypt error');
             }
             // Store hash in your password DB.
             let newUser = new User({
-                name: model.name,
-                address: model.address,
-                email: model.email,
-                password: hash,
-                picture: getAvatar(model.email)
+                Name: model.Name,
+                Address: model.Address,
+                Email: model.Email,
+                Password: hash,
+                Picture: getAvatar(model.Email)
             })
             newUser.save()
                 .then(() => {
-                    observer.next(true);
+                    resolve(true)
                 })
                 .catch((err) => {
-                    if (err.code == 11000) {
-                        observer.error('email already used');
+                    if (err.code === 11000) {
+                        reject('email already used');
                     }
                     else {
-                        observer.error(`${err} : bad happend while we are saving user data`);
+                        reject(`${err} : bad happend while we are saving user data`);
                     }
                 })
         });
     })
+
 }
 
 
-function getAvatar(email: string, size: number = 200): string {
-    const md5 = crypto.createHash("md5").update(email).digest("hex");
+function getAvatar(Email: string, size: number = 200): string {
+    const md5 = crypto.createHash("md5").update(Email).digest("hex");
     return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 }

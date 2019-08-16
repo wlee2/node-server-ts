@@ -13,42 +13,42 @@ enum ERROR {
 const registerData = [
     //USED
     {
-        email: 'aaronwoolee95@gmail.com',
-        password: '123',
-        name: 'wooseok',
-        address: '3 Pemberton Ave'
+        Email: 'aaronwoolee95@gmail.com',
+        Password: 'lee2010',
+        Name: 'wooseok',
+        Address: '3 Pemberton Ave'
     },
     //LESS
     {
-        email: '123@123.com',
-        password: 'lee2010',
+        Email: '123@123.com',
+        Password: 'lee2010',
     },
     //WRONG
     {
-        email: '123@123.com',
-        password: 'lee2010',
-        name: 'weoqoe',
-        test: '123'
+        Email: '123@123.com',
+        Test: 'lee2010',
+        Name: 'weoqoe',
+        Who: '123'
     },
     //OVER
     {
-        email: 'aaronwoolee95@gmail.com',
-        password: '123',
-        name: 'wooseok',
-        address: '3 Pemberton Ave',
-        test: '123'
+        Email: 'aaronwoolee95@gmail.com',
+        Password: '123',
+        Name: 'wooseok',
+        Address: '3 Pemberton Ave',
+        Test: '123'
     },
     //credentials error
     {
-        email: '',
-        password: '',
-        name: '',
-        address: '',
+        Email: '',
+        Password: '',
+        Name: '',
+        Address: '',
     }
 ]
 
 describe("POST /user/register", () => {
-    ERROR.USED
+    // ERROR.USED
     test("should return 400 with used email error", (done) => {
         request(app).post("/user/register")
             .send(registerData[ERROR.USED])
@@ -59,7 +59,7 @@ describe("POST /user/register", () => {
             })
     });
 
-    ERROR.LESS
+    // ERROR.LESS
     test("should return 400 with less field error", (done) => {
         request(app).post("/user/register")
             .send(registerData[ERROR.LESS])
@@ -70,18 +70,18 @@ describe("POST /user/register", () => {
             })
     });
 
-    ERROR.WRONG
+    // ERROR.WRONG
     test("should return 400 with wrong field error", (done) => {
         request(app).post("/user/register")
             .send(registerData[ERROR.WRONG])
             .then(res => {
                 expect(res.status).toBe(400);
-                expect(res.body.error).toBe('test is not belong to register model');
+                expect(res.body.error).toBe('Test is not belong to register model');
                 done();
             })
     });
 
-    ERROR.OVER
+    // ERROR.OVER
     test("should return 400 with wrong field error", (done) => {
         request(app).post("/user/register")
             .send(registerData[ERROR.OVER])
@@ -92,7 +92,7 @@ describe("POST /user/register", () => {
             })
     });
 
-    ERROR.CREDENTIAL
+    // ERROR.CREDENTIAL
     test("should return 400 with wrong field error", (done) => {
         request(app).post("/user/register")
             .send(registerData[ERROR.CREDENTIAL])

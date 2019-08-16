@@ -17,22 +17,22 @@ router.get("/", async (req: Request, res: Response) => {
         }
         let reviewDTO: ReviewDTO[] = [];
 
-        const reviews: ReviewModel[] = await Review.find().populate('Author').sort({WrittenDate: -1}).skip(req.query.page * 5).limit(5);
+        const reviews: ReviewModel[] = await Review.find().populate('Author').sort({ WrittenDate: -1 }).skip(req.query.page * 5).limit(5);
         reviews.forEach(review => {
             MongoModelToViewModel(review, new ReviewDTO(), (error: any, result: ReviewDTO) => {
-                if(error) {
+                if (error) {
                     throw error;
                 }
                 result.ID = review._id;
-                result.AuthorEmail = review.Author.email;
+                result.AuthorEmail = review.Author.Email;
                 reviewDTO.push(result);
             })
         })
         res.status(200).send(reviewDTO);
-    } catch(error) {
+    } catch (error) {
         res.status(400).send({ error: error })
     }
-    
+
 });
 
 
@@ -47,7 +47,7 @@ router.post("/", Authorize, async (req: Request, res: Response) => {
             reviewDAO = req.body;
         });
         //const author = await User.findOne({ email: reviewDAO.AuthorEmail })
-        const author = await User.findOne({ email: req.user.email })
+        const author = await User.findOne({ Email: req.user.Email })
 
         let newReview: ReviewModel = new Review({
             ReviewContentText: reviewDAO.ReviewContentText,
@@ -63,21 +63,21 @@ router.post("/", Authorize, async (req: Request, res: Response) => {
             Photos: reviewDAO.Photos
         });
 
+        const reviewSaveResult = await newReview.save();
+        author.Reviews.push(reviewSaveResult._id);
+        const userSaveResult = await author.save();
+
         savePhotoByReference(reviewDAO.Photos, newReview._id, (err: any) => {
-            if(err) {
+            if (err) {
                 throw err;
+            }
+            if (userSaveResult) {
+                res.status(200).send({ status: 'success' })
             }
         })
 
-        const reviewSaveResult = await newReview.save();
-        author.ReviewData.push(reviewSaveResult._id);
-        const userSaveResult = await author.save();
-        
-        if (userSaveResult) {
-            res.status(200).send({ status: 'success' })
-        }
-
     } catch (error) {
+        logger.debug("review post -> ", error);
         res.status(400).send({ error: error });
     }
 });
@@ -89,24 +89,24 @@ router.delete('/:id', Authorize, async (req: Request, res: Response) => {
         }
 
         delete_image(req.params.id, (error: any) => {
-            if(error) {
+            if (error) {
                 console.log("file delete error: ", error);
             }
         });
 
         const reviewResult = await Review.findById(req.params.id);
-        if(!reviewResult) {
+        if (!reviewResult) {
             throw 'finding review data result by id is null'
         }
 
         const userResult = await User.findById(reviewResult.Author);
-        if (req.user.email !== userResult.email) {
+        if (req.user.Email !== userResult.Email) {
             throw 'user is not valid'
         }
 
-        let index = userResult.ReviewData.indexOf(req.params.id);
+        let index = userResult.Reviews.indexOf(req.params.id);
         if (index > -1) {
-            userResult.ReviewData.splice(index, 1);
+            userResult.Reviews.splice(index, 1);
             userResult.save();
         }
         await Review.findByIdAndDelete(req.params.id);

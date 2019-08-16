@@ -12,8 +12,8 @@ export type ReviewModel = mongoose.Document & {
         Lat: Number,
         Lng: Number
     };
-    Photos: [String];
-    Comments: [Schema.Types.ObjectId];
+    Photos: Array<string>;
+    Comments: Array<Schema.Types.ObjectId>;
     WrittenDate: Date;
 };
 
@@ -30,7 +30,7 @@ const reviewSchema = new mongoose.Schema({
         Lat: Number,
         Lng: Number
     },
-    Photos: [String],
+    Photos: Array,
     WrittenDate: {
         type: Date, default: Date.now, required: true
     },

@@ -5,10 +5,10 @@ export default function ModelValidator(input: any, model: any, cb: CallableFunct
         cb("model fields is out of range")
     }
     Object.keys(input).forEach(key => {
-        if(input[key] === '') {
+        if (input[key] === '') {
             cb('model has empty data');
         }
-        else if (!model.hasOwnProperty(key)) {
+        if (!model.hasOwnProperty(key)) {
             cb(`${key} is not belong to register model`)
         }
     });

@@ -1,25 +1,13 @@
 export class UserRegisterDAO {
-  constructor() {
-    this.address = null;
-    this.name = null;
-    this.email = null;
-    this.password = null;
-  }
-  email: string;
-  name: string;
-  address: string;
-  password: string;
+  Email: string = null;
+  Name: string = null;
+  Address: string = null;
+  Password: string = null;
 }
 
 export class UserDTO {
-  constructor() {
-    this.address = null;
-    this.name = null;
-    this.email = null;
-    this.picture = null;
-  }
-  email: string;
-  name: string;
-  address: string;
-  picture: string;
+  Email: string = null;
+  Name: string = null;
+  Address: string = null;
+  Picture: string = null;
 }

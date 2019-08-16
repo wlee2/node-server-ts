@@ -14,15 +14,15 @@ passport.deserializeUser(function (user, done) {
 });
 
 passport.use(new LocalStrategy({
-    usernameField: 'email',
-    passwordField: 'password'
-}, (email, password, done) => {
-    User.findOne({ email: email.toLowerCase() }, (err: any, user: any) => {
+    usernameField: 'Email',
+    passwordField: 'Password'
+}, (Email, Password, done) => {
+    User.findOne({ Email: Email.toLowerCase() }, (err: any, user: any) => {
         if (err) { return done(err); }
         if (!user) {
-            return done(`Email ${email} not found.`, false);
+            return done(`Email ${Email} not found.`, false);
         }
-        bcrypt.compare(password, user.password, (err: Error, isMatch: boolean) => {
+        bcrypt.compare(Password, user.Password, (err: Error, isMatch: boolean) => {
             if (err) { return done(err); }
             if (isMatch) {
                 return done(undefined, user);
