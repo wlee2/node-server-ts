@@ -8,6 +8,5 @@ export class UserRegisterDAO {
 export class UserDTO {
   Email: string = null;
   Name: string = null;
-  Address: string = null;
   Picture: string = null;
 }
