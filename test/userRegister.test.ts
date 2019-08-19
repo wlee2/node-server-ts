@@ -14,19 +14,19 @@ const registerData = [
     //USED
     {
         Email: 'aaronwoolee95@gmail.com',
-        Password: 'lee2010',
+        Password: '123123',
         Name: 'wooseok',
         Address: '3 Pemberton Ave'
     },
     //LESS
     {
         Email: '123@123.com',
-        Password: 'lee2010',
+        Password: '123123',
     },
     //WRONG
     {
         Email: '123@123.com',
-        Test: 'lee2010',
+        Test: '123123',
         Name: 'weoqoe',
         Who: '123'
     },

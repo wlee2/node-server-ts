@@ -8,16 +8,17 @@ export const tryLocalLogin = (req: Request, res: Response, next: NextFunction) =
         throw err;
       }
       if (!user) {
-        throw info;
+        throw info.message;
       }
       req.login(user, loginErr => {
         if (loginErr) {
-          res.status(400).send({ message: loginErr });
+          throw loginErr;
+          //res.status(400).send({ message: loginErr });
         }
         next();
       });
-    } catch(err) {
-      res.status(400).send({ message: err });
+    } catch (err) {
+      res.status(400).send({ error: err });
     }
   })(req, res, next);
 };
@@ -37,8 +38,8 @@ export const tryGoogleLogin = (req: Request, res: Response, next: NextFunction) 
         }
         next();
       });
-    } catch(err) {
-      res.status(400).send({error: err})
+    } catch (err) {
+      res.status(400).send({ error: err })
     }
   })(req, res, next);
 };

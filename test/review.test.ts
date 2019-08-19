@@ -28,7 +28,7 @@ describe("review test", () => {
     test("prepare - should return 200 with token", (done) => {
         request(app).post("/user/login")
             .send({
-                Email: 'stoneage95xp@gmail.com',
+                Email: 'aaron@wooseok.lee',
                 Password: 'lee2010'
             })
             .then(res => {

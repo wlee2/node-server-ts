@@ -11,17 +11,17 @@ enum ERROR {
 const userData = [
     //true login
     {
-        Email: 'aaronwoolee95@gmail.com',
+        Email: 'aaron@wooseok.lee',
         Password: 'lee2010'
     },
     //email error
     {
-        Email: 'aaronwoolee95@gmail',
+        Email: 'aaron@wooseok',
         Password: 'lee2010'
     },
     //user error
     {
-        Email: 'aaronwoolee95@gmail.com',
+        Email: 'aaron@wooseok.lee',
         Password: '123'
     },
     //credentials error
@@ -52,7 +52,7 @@ describe("POST /user/login", () => {
             .send(userData[ERROR.EMAIL])
             .then(res => {
                 expect(res.status).toBe(400);
-                expect(res.body.message).toBe(`Email ${userData[1].Email} not found.`);
+                expect(res.body.error).toBe(`Email ${userData[1].Email} not found.`);
                 done();
             })
     });
@@ -63,7 +63,7 @@ describe("POST /user/login", () => {
             .send(userData[ERROR.USER_PASSWORD])
             .then(res => {
                 expect(res.status).toBe(400);
-                expect(res.body.message).toBe(`Invalid email or password.`);
+                expect(res.body.error).toBe(`Invalid email or password.`);
                 done();
             })
     });
@@ -74,7 +74,7 @@ describe("POST /user/login", () => {
             .send(userData[ERROR.CREDENTIALS])
             .then(res => {
                 expect(res.status).toBe(400);
-                expect(res.body.message).toBe(`Missing credentials`);
+                expect(res.body.error).toBe(`Missing credentials`);
                 done();
             })
     });
