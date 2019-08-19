@@ -29,7 +29,7 @@ passport.use(new LocalStrategy({
             throw `Email ${Email} is not local user`;
         }
         const passwordMatch = await bcrypt.compare(Password, user.Password)
-        if(!passwordMatch) {
+        if (!passwordMatch) {
             throw "Invalid email or password.";
         }
         done(undefined, user);
@@ -41,8 +41,8 @@ passport.use(new LocalStrategy({
 
 
 passport.use(new GoogleStrategy({
-    clientID: '620540436466-ep5ib5aaqipplg6sae31bbj5gqn285kp.apps.googleusercontent.com',
-    clientSecret: '-8CQBgbQeSqm7mXWi57pRWTg',
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: `/user/google`
 },
     async function (accessToken, refreshToken, profile, done) {
