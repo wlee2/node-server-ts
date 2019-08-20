@@ -93,7 +93,7 @@ Below is a list of all the scripts this template has available:
 | Npm Script | Description |
 | ------------------------- | ------------------------------------------------------------------------------------------------- |
 | **`jt`**                   | Test all or specific test file                                                                     |
-| **`watching-mode`**        | Runs both of watch-ts and watch-node                                                               |
+| **`watching-mode`**        | Runs both of watch-ts and watch-node `using this for test`                                       |
 | `start`                   | Does the same as 'npm run serve'. Can be invoked with `npm start`                                 |
 | `build`                   | Full build. Runs ALL build tasks (`build-sass`, `build-ts`, `lint`, `copy-static-assets`)       |
 | `serve`                   | Runs node on `dist/server.js` which is the apps entry point                                       |
