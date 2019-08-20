@@ -1,12 +1,11 @@
 import express from "express";
 import compression from "compression";  // compresses requests
 import bodyParser from "body-parser";
-import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import path from "path";
 import mongoose from "mongoose";
 import bluebird from "bluebird";
-import { MONGODB_URI, SESSION_SECRET } from "./util/secrets";
+import { MONGODB_URI } from "./util/secrets";
 import cors from "cors";
 import morgan from 'morgan';
 import logger from "./util/logger";
@@ -31,7 +30,7 @@ const app = express();
 const mongoUrl = MONGODB_URI;
 mongoose.Promise = bluebird;
 
-mongoose.connect(mongoUrl, { useNewUrlParser: true} ).then(
+mongoose.connect(mongoUrl, { useNewUrlParser: true }).then(
     () => { /** ready to use. The `mongoose.connect()` promise resolves to undefined. */ },
 ).catch(err => {
     logger.debug("MongoDB connection error. Please make sure MongoDB is running. " + err);
@@ -46,7 +45,7 @@ app.use(cors());
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser(SESSION_SECRET));
+// app.use(cookieParser(SESSION_SECRET));
 app.use(passport.initialize());
 app.use(helmet());
 
