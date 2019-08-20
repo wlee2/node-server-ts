@@ -104,7 +104,7 @@ router.delete('/:id', Authorize, async (req: Request, res: Response) => {
             throw 'user is not valid'
         }
 
-        let index = userResult.Reviews.indexOf(req.params.id);
+        let index = userResult.Reviews.indexOf(req.params.id as any);
         if (index > -1) {
             userResult.Reviews.splice(index, 1);
             userResult.save();
