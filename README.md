@@ -18,10 +18,6 @@ To build and run this app locally you will need a few things:
 git clone https://github.com/wlee2/node-server-ts.git
 ```
 
-# TypeScript + Node
-In the next few sections I will call out everything that changes when adding TypeScript to an Express project.
-Note that all of this has already been setup for this project, but feel free to use this as a reference for converting other Node.js projects to TypeScript.
-
 ## Getting TypeScript
 TypeScript itself is simple to add to any project with `npm`.
 ```
@@ -96,6 +92,8 @@ Below is a list of all the scripts this template has available:
 
 | Npm Script | Description |
 | ------------------------- | ------------------------------------------------------------------------------------------------- |
+| **`jt`**                   | Test all or specific test file                                                                     |
+| **`watching-mode`**        | Runs both of watch-ts and watch-node                                                               |
 | `start`                   | Does the same as 'npm run serve'. Can be invoked with `npm start`                                 |
 | `build`                   | Full build. Runs ALL build tasks (`build-sass`, `build-ts`, `lint`, `copy-static-assets`)       |
 | `serve`                   | Runs node on `dist/server.js` which is the apps entry point                                       |
@@ -112,8 +110,6 @@ Below is a list of all the scripts this template has available:
 | `debug`                   | Performs a full build and then serves the app in watch mode                                       |
 | `serve-debug`             | Runs the app with the --inspect flag                                                               |
 | `watch-debug`             | The same as `watch` but includes the --inspect flag so you can attach a debugger                   |
-| **.jt**                   | Test all or specific test file                                                                     |
-| **.watching-mode**        | Runs both of watch-ts and watch-node                                                               |
 
 ## Type Definition (`.d.ts`) Files
 TypeScript uses `.d.ts` files to provide types for JavaScript libraries that were not written in TypeScript.
