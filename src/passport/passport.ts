@@ -41,11 +41,12 @@ passport.use(new LocalStrategy({
 
 
 passport.use(new GoogleStrategy({
+    passReqToCallback: true,
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: `/user/google`
 },
-    async function (accessToken, refreshToken, profile, done) {
+    async function (req: any, accessToken: any, refreshToken: any, profile: any, done: any) {
         try {
             const user = await User.findOne({ Email: profile._json.email })
             if (!user) {

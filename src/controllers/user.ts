@@ -41,7 +41,8 @@ router.post("/login", tryLocalLogin, (req: Request, res: Response, next) => {
 router.get("/google", tryGoogleLogin, (req: Request, res: Response, next) => {
   try {
     const token = jwt.sign({ Email: req.user.Email }, process.env.SESSION_SECRET, { algorithm: 'HS512', expiresIn: '1d' });
-    res.redirect(`http://localhost:3000/auth/${token}`)
+    
+    res.redirect(`${req.query.state}${token}`)
   } catch (err) {
     res.status(400).send(err);
   }

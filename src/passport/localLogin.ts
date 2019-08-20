@@ -24,7 +24,7 @@ export const tryLocalLogin = (req: Request, res: Response, next: NextFunction) =
 };
 
 export const tryGoogleLogin = (req: Request, res: Response, next: NextFunction) => {
-  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login', 'email'] }, function (err, user, info) {
+  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login', 'email'], state: req.query.redirectURL }, function (err, user, info) {
     try {
       if (err) {
         throw err;
