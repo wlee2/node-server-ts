@@ -25,6 +25,7 @@ router.get("/", async (req: Request, res: Response) => {
                 }
                 result.ID = review._id;
                 result.AuthorEmail = review.Author.Email;
+                result.AuthorPicture = review.Author.Picture;
                 reviewDTO.push(result);
             })
         })

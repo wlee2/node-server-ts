@@ -30,6 +30,7 @@
     "@types/cookie-parser": "^1.4.1",
     "@types/passport-google-oauth": "^1.0.41",
     "@types/rimraf": "^2.0.2",
+    "@types/utf8": "^2.1.6",
     "async": "^3.0.1",
     "axios": "^0.19.0",
     "bcrypt": "^3.0.6",
@@ -60,6 +61,7 @@
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "rxjs": "^6.5.2",
+    "utf8": "^3.0.0",
     "winston": "^2.4.2"
   },
   "devDependencies": {

@@ -1,8 +1,6 @@
 import express, { Request, Response } from "express";
 import axios from 'axios';
-import logger from "../util/logger";
-import path from 'path';
-import fs from 'fs';
+import utf8 from 'utf8';
 
 const router = express.Router();
 
@@ -33,6 +31,40 @@ router.get('/detail', async (req: Request, res: Response) => {
         console.log(error);
         res.status(400).send({ error: error })
     }
+})
+
+router.get('/autocomplete/city', async (req: Request, res: Response) => {
+    try {
+        if (!req.query.input) {
+            throw 'input is required'
+        }
+        const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${process.env.GOOGLE_KEY}&input=${req.query.input}&types=(cities)`;
+        const { data: citys } = await axios.get(url);
+
+        let responseModel: Array<any> = await Promise.all(citys.predictions.map(async (e: any) => {
+            try {
+                const description = utf8.encode(e.description);
+                const geourl = `https://maps.googleapis.com/maps/api/geocode/json?key=${process.env.GOOGLE_KEY}&address=${description}`
+                const { data: geolocation } = await axios.get(geourl);
+
+                return ({
+                    description: e.description,
+                    geolocation: {
+                        lat: geolocation.results[0].geometry.location.lat,
+                        lng: geolocation.results[0].geometry.location.lng
+                    }
+                })
+            } catch (err) {
+                throw err;
+            }
+        }));
+
+        res.status(200).send(responseModel);
+    } catch (error) {
+        console.log(error)
+        res.status(400).send({ error: error })
+    }
+
 })
 // router.get('/photo/:reviewID/:photoID', (req: Request, res: Response) => {
 

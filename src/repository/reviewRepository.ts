@@ -18,6 +18,7 @@ export class ReviewDTO {
     ReviewContentText: string = '';
     PlaceRate: number = 0;
     AuthorEmail: string = '';
+    AuthorPicture: string = '';
     LocationReferenceID: string = '';
     LocationName: string = '';
     Address: string = '';
