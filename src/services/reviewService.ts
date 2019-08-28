@@ -17,7 +17,7 @@ export function savePhotoByReference(photoRef: any, reviewID: string, cb: Callab
     }
 
     let promises = photoRef.map((refID: any) => {
-        const url = `https://maps.googleapis.com/maps/api/place/photo?key=${process.env.GOOGLE_KEY}&photoreference=${refID}&maxheight=1000`;
+        const url = `https://maps.googleapis.com/maps/api/place/photo?key=${process.env.GOOGLE_KEY}&photoreference=${refID}&maxheight=600`;
         let photoPath = path.join('photos', reviewID.toString(), `${refID.toString()}.png`);
         return download_image(url, photoPath);
     })

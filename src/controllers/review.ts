@@ -29,12 +29,56 @@ router.get("/", async (req: Request, res: Response) => {
                 reviewDTO.push(result);
             })
         })
-        res.status(200).send(reviewDTO);
+        setTimeout(() => {
+            res.status(200).send(reviewDTO);
+        }, 2000)
+        // res.status(200).send(reviewDTO);
     } catch (error) {
         res.status(400).send({ error: error })
     }
 
 });
+
+router.get("/search", async (req: Request, res: Response) => {
+    try {
+        console.log(req.query.searchString)
+        if (!req.query.searchString) {
+            throw 'query is required'
+        }
+        let reviewDTO: any = {
+            byName: [],
+            byAddress: []
+        }
+
+        const reviewsByName: ReviewModel[] = await Review.find({ LocationName: { $regex: req.query.searchString, $options: ["i", "g"] } }).populate('Author').sort({ WrittenDate: -1 }).limit(5);
+        const reviewsByAddress: ReviewModel[] = await Review.find({ Address: { $regex: req.query.searchString, $options: ["i", "g"] } }).populate('Author').sort({ WrittenDate: -1 }).limit(5);
+        reviewsByName.forEach(review => {
+            MongoModelToViewModel(review, new ReviewDTO(), (error: any, result: ReviewDTO) => {
+                if (error) {
+                    throw error;
+                }
+                result.ID = review._id;
+                result.AuthorEmail = review.Author.Email;
+                result.AuthorPicture = review.Author.Picture;
+                reviewDTO.byName.push(result);
+            })
+        })
+        reviewsByAddress.forEach(review => {
+            MongoModelToViewModel(review, new ReviewDTO(), (error: any, result: ReviewDTO) => {
+                if (error) {
+                    throw error;
+                }
+                result.ID = review._id;
+                result.AuthorEmail = review.Author.Email;
+                result.AuthorPicture = review.Author.Picture;
+                reviewDTO.byAddress.push(result);
+            })
+        })
+        res.status(200).send(reviewDTO);
+    } catch (err) {
+        res.status(400).send({ error: err })
+    }
+})
 
 
 router.post("/", Authorize, async (req: Request, res: Response) => {
