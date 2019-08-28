@@ -29,10 +29,7 @@ router.get("/", async (req: Request, res: Response) => {
                 reviewDTO.push(result);
             })
         })
-        setTimeout(() => {
-            res.status(200).send(reviewDTO);
-        }, 2000)
-        // res.status(200).send(reviewDTO);
+        res.status(200).send(reviewDTO);
     } catch (error) {
         res.status(400).send({ error: error })
     }
