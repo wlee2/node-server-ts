@@ -63,7 +63,7 @@ app.use(helmet());
 // app.use(passport.session());
 
 app.use(
-    express.static(path.join(__dirname, "public"), { maxAge: 31557600000 })
+    express.static(path.join(__dirname))
 );
 app.use('/photo', express.static(path.join('photos')))
 
