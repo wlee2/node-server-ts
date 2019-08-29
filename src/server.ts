@@ -15,8 +15,8 @@ app.use(errorHandler());
 //...
 
 https.createServer({
-  key: fs.readFileSync('./cert/server.key'),
-  cert: fs.readFileSync('./cert/server.cert')
+    key: fs.readFileSync('/etc/letsencrypt/live/woosenecac.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/woosenecac.com/fullchain.pem')
 }, app).listen(app.get("httpsPort"), () => {
     console.log(
         "   HTTPS App is running at https://localhost:%d in %s mode",
